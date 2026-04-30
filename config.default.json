@@ -1,0 +1,37 @@
+{
+  "global": {
+    "keywords": [
+      "medical science liaison",
+      "medical affairs",
+      "MSL",
+      "oncology",
+      "immunology",
+      "neuroscience"
+    ],
+    "location": "United Kingdom",
+    "max_jobs_per_site": 60
+  },
+  "sites": [
+    {
+      "id": "sanofi",
+      "name": "Sanofi UK",
+      "scraper": "sanofi",
+      "url": "https://jobs.sanofi.com/en/search-jobs/United%20Kingdom/2649/2/2635167/54x75844/-2x69531/50/2",
+      "enabled": true
+    },
+    {
+      "id": "msd",
+      "name": "MSD UK",
+      "scraper": "msd",
+      "url": "https://jobs.msd.com/gb/en/uk-job-search",
+      "enabled": true
+    },
+    {
+      "id": "gsk",
+      "name": "GSK",
+      "scraper": "gsk",
+      "url": "https://www.gsk.com/en-gb/careers/search-jobs/",
+      "enabled": true
+    }
+  ]
+}
