@@ -168,7 +168,10 @@ class BaseScraper:
             # If we don't know the location, don't filter it out — better to
             # err on the side of showing it than to drop it silently.
             return True
-        return loc_pref in location.lower()
+        loc = location.lower()
+        if loc_pref in {"uk", "united kingdom"}:
+            return "united kingdom" in loc or re.search(r"\buk\b", loc) is not None
+        return loc_pref in loc
 
     # ---------- Top-level orchestrator --------------------------------------
 
@@ -194,6 +197,9 @@ class BaseScraper:
                 job = self.fetch_details(stub)
             except Exception as e:  # noqa: BLE001
                 log.warning("detail parse failed for %s: %s", stub.url, e)
+                continue
+
+            if not self.location_match(job.location):
                 continue
 
             # Final keyword check using full text

@@ -54,6 +54,32 @@ python jobs.py sites      # add / remove / edit sites
 python jobs.py settings   # change global keywords / location
 ```
 
+## Changing keywords, location, and fetch size
+
+Run:
+
+```bash
+python jobs.py settings
+```
+
+The settings screen shows your current filters and then asks what to edit.
+
+- **Keywords**: the app shows the current list first. Choose `A` to add more
+  keywords, `C` to clear the whole list, or `S` to skip without changing it.
+- **Adding keywords**: enter a comma-separated list, for example
+  `medical science liaison, medical affairs, MSL`. Duplicate keywords are
+  ignored.
+- **No keywords**: with an empty keyword list, the keyword filter matches all
+  jobs returned by the site, subject to location and fetch-size limits.
+- **Location**: enter one location filter, for example `United Kingdom`,
+  `London`, or `Europe`.
+- **Remove the location filter**: type `CLEAR`. With no location, the app keeps
+  jobs from any location returned by the site.
+- **Keep an existing setting**: press Enter without typing anything.
+- **Max jobs per site**: caps how many matched jobs are saved from each site per
+  fetch. Higher values are broader but slower, and some sites still apply their
+  own API limits.
+
 ## Where your data lives
 
 Everything stays on your Mac, in the `data/` folder next to `jobs.py`:
@@ -110,3 +136,52 @@ expect to have results, try:
 1. `python jobs.py fetch --site sanofi --debug` — prints what it found.
 2. Open `config.json` and update the search URL to a more specific one.
 3. Switch the scraper to `generic` if a per-platform one stops working.
+
+## Schedule Fetch (MacBook)
+
+1. create a file
+```bash
+nano ~/Library/LaunchAgents/com.YOUR_NAME.jobsearch.fetch.plist
+```
+
+2. create job
+```bash
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+ "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.YOUR_NAME.jobsearch.fetch</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/Users/YOUR_USERNAME/Desktop/job-search/.venv/bin/python</string>
+      <string>/Users/YOUR_USERNAME/Desktop/job-search/jobs.py</string>
+      <string>fetch</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/YOUR_USERNAME/Desktop/job-search</string>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>8</integer>
+      <key>Minute</key>
+      <integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/YOUR_USERNAME/Desktop/job-search/data/fetch.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/YOUR_USERNAME/Desktop/job-search/data/fetch-error.log</string>
+  </dict>
+</plist>
+```
+
+3. schedule the job
+```bash
+launchctl load ~/Library/LaunchAgents/com.YOUR_NAME.jobsearch.fetch.plist
+```

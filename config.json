@@ -1,14 +1,6 @@
 {
   "global": {
-    "keywords": [
-      "medical science liaison",
-      "medical affairs",
-      "MSL",
-      "oncology",
-      "immunology",
-      "neuroscience",
-      "medical writer"
-    ],
+    "keywords": [],
     "location": "United Kingdom",
     "max_jobs_per_site": 60
   },
@@ -38,36 +30,36 @@
       "id": "astrazeneca",
       "name": "AstraZeneca",
       "scraper": "generic",
-      "url": "https://careers.astrazeneca.com/search-jobs?keywords={keyword}&location=United%20Kingdom",
-      "enabled": false
+      "url": "https://careers.astrazeneca.com/search-jobs?keywords=medical%20science%20liaison&location=United%20Kingdom",
+      "enabled": true
     },
     {
       "id": "roche",
       "name": "Roche",
       "scraper": "workday",
       "url": "https://roche.wd3.myworkdayjobs.com/en-US/roche-ext",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "novartis",
       "name": "Novartis UK",
       "scraper": "generic",
-      "url": "https://www.novartis.com/uk-en/careers/career-search?search_api_fulltext={keyword}",
-      "enabled": false
+      "url": "https://www.novartis.com/uk-en/careers/career-search?search_api_fulltext=medical%20science%20liaison",
+      "enabled": true
     },
     {
       "id": "bms",
       "name": "Bristol Myers Squibb",
       "scraper": "workday",
       "url": "https://bristolmyerssquibb.wd5.myworkdayjobs.com/en-US/BMS",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "abbvie",
       "name": "AbbVie",
       "scraper": "generic",
       "url": "https://careers.abbvie.com/en/jobs?search={keyword}",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "ipsen",
@@ -81,7 +73,7 @@
       "name": "Johnson & Johnson",
       "scraper": "generic",
       "url": "https://www.careers.jnj.com/en/jobs/?search={keyword}",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "medcomms",
@@ -95,14 +87,14 @@
       "name": "Oxford PharmaGenesis",
       "scraper": "generic",
       "url": "https://careers.pharmagenesis.com/",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "inizio-medical",
       "name": "Inizio Medical",
       "scraper": "generic",
       "url": "https://inizio.com/our-businesses/medical/careers/",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "pharmiweb",
@@ -123,119 +115,119 @@
       "name": "Eli Lilly",
       "scraper": "workday",
       "url": "https://lilly.wd5.myworkdayjobs.com/en-US/LLY",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "boehringer-ingelheim",
       "name": "Boehringer Ingelheim",
       "scraper": "generic",
       "url": "https://jobs.boehringer-ingelheim.com/search/?q={keyword}&locationsearch=United%20Kingdom",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "pfizer",
       "name": "Pfizer",
       "scraper": "workday",
       "url": "https://pfizer.wd1.myworkdayjobs.com/en-US/PfizerCareers",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "takeda",
       "name": "Takeda",
       "scraper": "generic",
       "url": "https://www.takedajobs.com/search-jobs?keywords={keyword}&location=United%20Kingdom",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "ucb",
       "name": "UCB",
       "scraper": "generic",
       "url": "https://careers.ucb.com/global/en/search-results?keywords={keyword}",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "amgen",
       "name": "Amgen",
       "scraper": "generic",
       "url": "https://careers.amgen.com/en/search-jobs?keywords={keyword}&location=United%20Kingdom",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "astellas",
       "name": "Astellas",
       "scraper": "generic",
       "url": "https://careers.astellas.com/search/?q={keyword}&locationsearch=United%20Kingdom",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "daiichi-sankyo",
       "name": "Daiichi Sankyo",
       "scraper": "generic",
       "url": "https://careers.daiichisankyo.com/search/?q={keyword}&locationsearch=United%20Kingdom",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "envision-pharma",
       "name": "Envision Pharma Group",
       "scraper": "generic",
       "url": "https://www.envisionpharmagroup.com/careers/",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "open-health",
       "name": "OPEN Health",
       "scraper": "generic",
       "url": "https://careers.openhealthgroup.com/search/?q={keyword}&locationsearch=United%20Kingdom",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "omnicom-health",
       "name": "Omnicom Health Group",
       "scraper": "generic",
       "url": "https://job-boards.greenhouse.io/omnicomhealth",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "prime-global",
       "name": "Prime Global",
       "scraper": "generic",
       "url": "https://primeglobalpeople.com/jobs/",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "costello-medical",
       "name": "Costello Medical",
       "scraper": "generic",
       "url": "https://www.costellomedical.com/careers/",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "bionical-emas",
       "name": "Bionical Emas",
       "scraper": "generic",
       "url": "https://careers.bionicalemas.com/",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "carrot-recruitment",
       "name": "Carrot Recruitment",
       "scraper": "generic",
       "url": "https://www.carrotrecruitment.com/jobs/",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "proclinical",
       "name": "Proclinical Jobs",
       "scraper": "generic",
       "url": "https://www.proclinical.com/jobs?keywords={keyword}",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "ck-group",
       "name": "CK Group Jobs",
       "scraper": "generic",
       "url": "https://www.ckgroup.co.uk/jobs/?keywords={keyword}",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "chase",

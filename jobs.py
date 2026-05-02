@@ -30,6 +30,7 @@ from jobtracker.config import Config, GlobalSettings, Site
 from jobtracker.scrapers import get_scraper, REGISTRY
 from jobtracker.ui.review import run_review
 from jobtracker.ui.list_screen import run_list
+from jobtracker.ui.site_screen import run_site_toggle
 
 
 console = Console()
@@ -138,7 +139,7 @@ def cmd_sites(args: argparse.Namespace) -> None:  # noqa: ARG001
             default="b",
             show_choices=False,
         ).lower()
-        # a=add  e=edit  r=remove  t=toggle enabled  b=back
+        # a=add  e=edit  r=remove  t=toggle sites  b=back
         if action == "a":
             _add_site(cfg)
         elif action == "e":
@@ -146,7 +147,7 @@ def cmd_sites(args: argparse.Namespace) -> None:  # noqa: ARG001
         elif action == "r":
             _remove_site(cfg)
         elif action == "t":
-            _toggle_site(cfg)
+            run_site_toggle(cfg)
         else:
             return
         cfg.save()
@@ -163,17 +164,86 @@ def cmd_settings(args: argparse.Namespace) -> None:  # noqa: ARG001
         border_style="cyan",
     ))
     if Confirm.ask("\nEdit keywords?", default=False):
-        raw = Prompt.ask(
-            "Enter keywords (comma-separated)",
-            default=", ".join(gs.keywords),
-        )
-        gs.keywords = [k.strip() for k in raw.split(",") if k.strip()]
+        _edit_keywords(gs)
     if Confirm.ask("Edit location?", default=False):
-        gs.location = Prompt.ask("Location", default=gs.location)
+        _edit_location(gs)
     if Confirm.ask("Edit max jobs per site?", default=False):
-        gs.max_jobs_per_site = IntPrompt.ask("Max jobs", default=gs.max_jobs_per_site)
+        _edit_max_jobs(gs)
     cfg.save()
     console.print("[green]Saved.[/]")
+
+
+def _edit_keywords(gs: GlobalSettings) -> None:
+    current = ", ".join(gs.keywords) or "(none)"
+    console.print(Panel.fit(
+        f"[bold]Current keywords:[/] {current}\n\n"
+        "[bold]A[/] = Add keywords to the current list\n"
+        "[bold]C[/] = Clear the whole keyword list\n"
+        "[bold]S[/] = Skip without changing keywords",
+        title="Keyword settings",
+        border_style="cyan",
+    ))
+    action = Prompt.ask(
+        "Keyword action",
+        choices=["A", "C", "S", "a", "c", "s"],
+        default="S",
+        show_choices=False,
+    ).lower()
+    if action == "s":
+        console.print("[yellow]Keywords unchanged.[/]")
+        return
+    if action == "c":
+        gs.keywords = []
+        console.print("[green]Keywords cleared.[/]")
+        return
+
+    raw = Prompt.ask(
+        "Keywords to add (comma-separated)",
+        default="",
+    )
+    new_keywords = [k.strip() for k in raw.split(",") if k.strip()]
+    if not new_keywords:
+        console.print("[yellow]No keywords added.[/]")
+        return
+    existing = {k.lower() for k in gs.keywords}
+    for keyword in new_keywords:
+        key = keyword.lower()
+        if key in existing:
+            continue
+        gs.keywords.append(keyword)
+        existing.add(key)
+    console.print(f"[green]Keywords set:[/] {', '.join(gs.keywords) or '(none)'}")
+
+
+def _edit_location(gs: GlobalSettings) -> None:
+    console.print(
+        "\n[bold]Location instructions[/]\n"
+        "  - Enter one location filter, for example United Kingdom, London, or Europe.\n"
+        "  - Type [bold]CLEAR[/] to remove the location filter.\n"
+        "  - Press [bold]Enter[/] without typing anything to keep the current location."
+    )
+    raw = Prompt.ask("Location", default="")
+    if not raw.strip():
+        console.print("[yellow]Location unchanged.[/]")
+        return
+    if raw.strip().lower() == "clear":
+        gs.location = ""
+        console.print("[green]Location filter cleared.[/]")
+        return
+    gs.location = raw.strip()
+    console.print(f"[green]Location set:[/] {gs.location}")
+
+
+def _edit_max_jobs(gs: GlobalSettings) -> None:
+    console.print(
+        "\n[bold]Max jobs instructions[/]\n"
+        "  - This caps how many matched jobs are saved from each site per fetch.\n"
+        "  - Higher values are broader but slower."
+    )
+    gs.max_jobs_per_site = IntPrompt.ask(
+        "Max jobs per site",
+        default=gs.max_jobs_per_site,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -192,13 +262,16 @@ def _show_sites(cfg: Config) -> None:
         table.add_row(
             str(i), s.id, s.name, s.scraper,
             "[green]✓[/]" if s.enabled else "[red]✗[/]",
-            s.url,
+            _display_site_url(s.url),
         )
     console.print(table)
     console.print(
         "[bold]A[/]dd  ·  [bold]E[/]dit  ·  [bold]R[/]emove  ·  "
         "[bold]T[/]oggle enable  ·  [bold]B[/]ack"
     )
+
+def _display_site_url(url: str) -> str:
+    return url.replace("{keyword}", "<global keywords>")
 
 
 def _pick_site(cfg: Config) -> Site | None:

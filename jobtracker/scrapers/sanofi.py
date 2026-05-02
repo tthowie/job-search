@@ -28,27 +28,31 @@ class SanofiScraper(BaseScraper):
     # ----- API path ----------------------------------------------------------
 
     def _try_api(self) -> Iterable[JobStub]:
-        keyword = " ".join(self.settings.keywords[:3]) if self.settings.keywords else ""
-        params = {
-            "from": 0,
-            "size": min(self.settings.max_jobs_per_site, 50),
-            "keyword": keyword,
-            "location": self.settings.location or "United Kingdom",
-            "country": "United Kingdom",
-            "locale": "en_GB",
-        }
-        data = self.get_json(f"{self.API}?{urlencode(params)}")
-        if not isinstance(data, dict):
-            return
-        # Phenom shape: {"jobs": [{"title": ..., "url": ..., "city": ..., ...}, ...]}
-        jobs = data.get("jobs") or data.get("hits") or []
-        for j in jobs:
-            url = j.get("applyUrl") or j.get("url") or j.get("jobUrl") or ""
-            if url and not url.startswith("http"):
-                url = urljoin(self.BASE, url)
-            title = j.get("title") or j.get("jobTitle") or ""
-            location = j.get("city") or j.get("location") or j.get("country") or ""
-            if url:
+        seen: set[str] = set()
+        keywords = self.settings.keywords if self.settings.keywords else [""]
+        for keyword in keywords:
+            params = {
+                "from": 0,
+                "size": min(self.settings.max_jobs_per_site, 50),
+                "keyword": keyword,
+                "location": self.settings.location or "United Kingdom",
+                "country": "United Kingdom",
+                "locale": "en_GB",
+            }
+            data = self.get_json(f"{self.API}?{urlencode(params)}")
+            if not isinstance(data, dict):
+                continue
+            # Phenom shape: {"jobs": [{"title": ..., "url": ..., "city": ..., ...}, ...]}
+            jobs = data.get("jobs") or data.get("hits") or []
+            for j in jobs:
+                url = j.get("applyUrl") or j.get("url") or j.get("jobUrl") or ""
+                if url and not url.startswith("http"):
+                    url = urljoin(self.BASE, url)
+                if not url or url in seen:
+                    continue
+                seen.add(url)
+                title = j.get("title") or j.get("jobTitle") or ""
+                location = j.get("city") or j.get("location") or j.get("country") or ""
                 yield JobStub(url=url, title=title, company="Sanofi", location=location)
 
     # ----- HTML fallback ----------------------------------------------------

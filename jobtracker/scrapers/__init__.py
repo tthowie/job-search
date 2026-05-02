@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from .base import BaseScraper, JobStub
 from .generic import GenericScraper
+from .workday import WorkdayScraper
 from .sanofi import SanofiScraper
 from .msd import MSDScraper
 from .gsk import GSKScraper
@@ -15,6 +16,7 @@ from .gsk import GSKScraper
 
 REGISTRY: dict[str, type[BaseScraper]] = {
     "generic": GenericScraper,
+    "workday": WorkdayScraper,
     "sanofi": SanofiScraper,
     "msd": MSDScraper,
     "gsk": GSKScraper,
@@ -30,6 +32,7 @@ __all__ = [
     "BaseScraper",
     "JobStub",
     "GenericScraper",
+    "WorkdayScraper",
     "SanofiScraper",
     "MSDScraper",
     "GSKScraper",
